@@ -3,7 +3,7 @@ from fastapi import FastAPI, Depends
 # Importa a sessão do SQLAlchemy para interagir com o banco.
 from sqlalchemy.orm import Session
 # Importa o modelo de dados Contato.
-from model import Contato, ContatoCreate
+from model import Contato, ContatoDTO
 # Importa a conexão com o banco.
 from database import engine, Base
 # Importa a classe de sessão configurada.
@@ -24,7 +24,7 @@ def get_db():  # Define uma função para obter uma nova sessão de banco.
 # Define um endpoint para criação de contatos.
 @app.post("/contatos/")
 # Função que recebe o contato e a sessão como dependências.
-def create_contato(contato: ContatoCreate, db: Session = Depends(get_db)):
+def create_contato(contato: ContatoDTO, db: Session = Depends(get_db)):
       # Cria um novo objeto Contato com os dados recebidos.
       db_contato = Contato(nome=contato.nome, telefone=contato.telefone, email=contato.email)
       # Adiciona o novo contato à sessão do banco.
@@ -55,7 +55,7 @@ def read_contato(contato_id: int, db: Session = Depends(get_db)):
 # Define um endpoint para atualizar um contato existente.
 @app.put("/contatos/{contato_id}")
 # Função que recebe o ID, o novo contato e a sessão.
-def update_contato(contato_id: int, contato: ContatoCreate, db: Session = Depends(get_db)):
+def update_contato(contato_id: int, contato: ContatoDTO, db: Session = Depends(get_db)):
     # Busca o contato pelo ID.
     db_contato = db.query(Contato).filter(Contato.id == contato_id).first()
     # Verifica se o contato existe.

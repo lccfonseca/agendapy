@@ -19,7 +19,7 @@ class Contato(Base):
     email = Column(String(100))
 
 # Define o modelo que representa o corpo da requisição de criação.
-class ContatoCreate(BaseModel):
+class ContatoDTO(BaseModel):
     # Campo para o nome.
     nome: str
     # Campo para o telefone.
