@@ -74,3 +74,20 @@ def update_contato(contato_id: int, contato: ContatoCreate, db: Session = Depend
         return db_contato
     # Retorna mensagem de erro se o contato não existe.
     return {"error": "Contato não encontrado"}
+
+# Define um endpoint para deletar um contato especificado pelo ID.
+@app.delete("/contatos/{contato_id}")
+# Função que recebe o ID e a sessão.
+def delete_contato(contato_id: int, db: Session = Depends(get_db)):
+    # Busca o contato pelo ID.
+    db_contato = db.query(Contato).filter(Contato.id == contato_id).first()  
+    # Verifica se o contato existe.
+    if db_contato:
+        # Remove o contato da sessão.
+        db.delete(db_contato)
+        # Persiste as alterações no banco.
+        db.commit()
+        # Retorna mensagem de sucesso.
+        return {"message": "Contato deletado"}
+    # Retorna mensagem de erro se o contato não existe.
+    return {"error": "Contato não encontrado"}
